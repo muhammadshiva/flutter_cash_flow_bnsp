@@ -1,28 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cash_flow/beranda_page.dart';
-// import 'package:flutter_application_1/detail_cash_flow.dart';
-// import 'package:flutter_application_1/pengaturan_page.dart';
-// import 'package:flutter_application_1/tambah_pemasukan.dart';
 
-const users = const {
-  'fransiskaly@gmail.com': '12345678',
-};
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
-class LoginPage extends StatelessWidget {
+class _LoginPageState extends State<LoginPage> {
   Duration get loginTime => Duration(milliseconds: 2250);
-
-// Future<String> _authUser(LoginData data) {
-//     print('Name: ${data.name}, Password: ${data.password}');
-//     return Future.delayed(loginTime).then((_) {
-//       if (!users.containsKey(data.name)) {
-//         return 'Username not exists';
-//       }
-//       if (users[data.name] != data.password) {
-//         return 'Password does not match';
-//       }
-//       return null;
-//     });
-//   }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,21 +35,45 @@ class LoginPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: TextField(
-              autocorrect: false,
-              autofocus: true,
-              decoration: InputDecoration(
-                hintText: "Username",
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: TextField(
-              autocorrect: false,
-              autofocus: false,
-              decoration: InputDecoration(
-                hintText: "Password",
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    obscureText: true,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      hintText: 'Username',
+                    ),
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      } else if (value != "fransiska") {
+                        return 'Wrong username';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 6),
+                  TextFormField(
+                    obscureText: true,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      hintText: 'Input password',
+                    ),
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      } else if (value != "1234") {
+                        return 'Wrong password';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -71,9 +81,16 @@ class LoginPage extends StatelessWidget {
             width: 320,
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return BerandaPage();
-                  }));
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return BerandaPage();
+                        },
+                      ),
+                    );
+                  }
                 },
                 child: const Text("Login")),
           )
