@@ -4,8 +4,25 @@ import 'package:flutter_cash_flow/beranda_page.dart';
 // import 'package:flutter_application_1/pengaturan_page.dart';
 // import 'package:flutter_application_1/tambah_pemasukan.dart';
 
+const users = const {
+  'fransiskaly@gmail.com': '12345678',
+};
 class LoginPage extends StatelessWidget {
+Duration get loginTime => Duration(milliseconds: 2250);
 
+Future<String> _authUser(LoginData data) {
+    print('Name: ${data.name}, Password: ${data.password}');
+    return Future.delayed(loginTime).then((_) {
+      if (!users.containsKey(data.name)) {
+        return 'Username not exists';
+      }
+      if (users[data.name] != data.password) {
+        return 'Password does not match';
+      }
+      return null;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
